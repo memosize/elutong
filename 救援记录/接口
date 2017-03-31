@@ -1,0 +1,382 @@
+#数据格式为json;返回成功时：error=0；失败：error不为0  !
+
+1.接口名称：会员预约信息
+请求方式：GET
+必须参数：；可选参数：type =（1为商品预约，2为维修预约），status = （1为未处理，2处理成功，3处理失败，4正在处理），limit = 查询条数（默认10条）
+接口地址：http地址+index.php?m=member&c=api_appointment&a=index 示例：www.b1ss.com/app/admin/index.php?m=member&c=api_appointment&a=index
+
+
+
+2.接口名称：商品评论列表
+请求方式：GET
+必须参数：sku_id；
+接口地址：http地址+index.php?m=goods&c=api&a=goods_comment 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=goods_comment&sku_id=3
+
+
+3.接口名称：店铺评论列表
+请求方式：GET
+必须参数：seller_id；
+接口地址：http地址+index.php?m=goods&c=api&a=seller_comment 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=seller_comment
+
+
+
+4.接口名称：商品列表
+请求方式：GET
+必须参数：；
+可选参数：*
+num 商品条数，默认3条
+order 排序方式，默认id倒序排序，随机：rand()；后台排序：sort
+id 查询某个商品
+seller_id 查询某个店铺的商品，0为平台自营
+catid  分类查询 分类id
+status_ext 商品标签 1（促销），2（热销）3（新品），4（推荐）
+接口地址：http地址+index.php?m=goods&c=api&a=goods_list 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=goods_list
+/*成功返回示例
+* Array
+(
+[error] => 0（为0成功）
+[data] => Array
+(
+[count] => 7
+[lists] => Array
+(
+[0] => Array
+(
+[[sku_id] => 主商品ID
+[spu_id] => 子商品ID
+[name] => 商品名字
+[seller_id] => 所属店铺
+[sn] => 商品编号
+[thumb] => 商品缩略图
+[shop_price] => 展示价格
+[status_ext]=> 商品标签 0(无)1（促销），2（热销）3（新品），4（推荐）
+)
+
+)
+
+)
+
+)
+*/
+
+
+
+5.接口名称：商品详情
+请求方式：GET
+必须参数：sku_id；
+接口地址：http地址+index.php?m=goods&c=api&a=goods_detail 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=goods_detail
+/*返回示例
+*Array
+(
+[spu_id] => 子商品ID
+[spu_name] => 子商品名字
+[seller_id] => 所属店铺ID
+[catid] => 分类ID
+[prom_type] =>促销类型
+[prom_id] => 0
+[prom_time] =>促销类型
+[prom_price] => 促销价
+[goods_proms] =>
+[catename] => 分类名字
+[spu_total] => 库存
+[sales] => 销售量
+[specs] => Array
+(所有规格
+)
+
+[img_list] => 图片
+[sku_arr] => Array
+(所属子商品
+[0] => Array
+(
+[sku_id] => 主商品ID
+[spu_id] => 子商品ID
+[sku_name] =>  主商品名字
+[sn] => 商品编号
+[barcode] =>
+[spec] =>
+[imgs] =>
+[thumb] =>
+[status_ext] => 商品标签 0(无)1（促销），2（热销）3（新品），4（推荐）
+[number] => 库存
+[market_price] => 市场价
+[sort] =>
+[shop_price] => 展示价
+[keyword] =>
+[description] =>
+[content] =>商品详情
+[show_in_lists] =>
+[warn_number] =>
+[prom_type] =>促销类型（time限时促销，goods，商品促销）
+[prom_id] => 促销ID
+[up_time] =>
+[update_time] =>
+[edition] =>
+[seller_id] => 所属店铺ID
+[spec_array] =>规格数据
+)
+
+)
+)
+*/
+
+
+
+
+6.接口名称：店铺接口
+请求方式：GET
+必须参数：；
+可选参数： limit 店铺个数，
+id 查询某个店铺
+sku_id 查询某个商品的店铺
+接口地址：http地址+index.php?m=goods&c=api&a=seller 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=seller
+/*
+* 成功返回示例
+* Array
+(
+[error] => 0
+[data] => Array
+(
+[id] => 店铺id
+[seller_name] => 商户名字
+[shopName] => 店铺名字
+[is_make] => （0能预约，1不能预约）
+[moto] => (维修类型多个用逗号隔开：1摩托，2电瓶车)
+[avatar] => 店铺图片
+[content] => 店铺详情（html代码）
+[lat] => 纬度
+[lng] => 经度
+[status] =>0:营业中可充电,1:营业中不可充电,2:未营业
+[mobile] => 店铺电话
+[district] => 店铺地址
+[address] =>详细地址
+)
+
+)
+
+
+8.接口名称：商品店铺搜索
+请求方式：GET
+必须参数：keywords 搜索关键词；
+可选参数：
+接口地址：http地址+index.php?m=goods&c=api&a=search 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=search
+/**
+* 返回成功示例
+* Array
+(
+[error] => 0
+[data] => Array
+(
+[goods] => Array
+(#商品
+[0] => Array
+(
+[sku_id] => 主商品ID
+[spu_id] => 子商品ID
+[name] => 商品名字
+[img_list] => 商品图片
+[cat_name] => 分类名字
+[shop_price] => 展示价格
+[content] => 商品详情
+[sku_total] => 库存
+[seller_id] => 所属店铺ID
+)
+)
+)
+[seller] => Array
+(#店铺
+[0] => Array
+(
+[id] => 店铺ID
+[seller_name] => 商户名字
+[shopName] => 店铺名字
+[avatar] => 店铺图片
+)
+)
+)
+)
+*/
+
+
+
+9.接口名称：会员登录
+请求方式：POST
+必须参数：$data=array('username'=>'会员名/手机号','password'=>'密码')；
+可选参数：
+接口地址：http地址+index.php?m=goods&c=api&a=member_login 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=member_login
+
+
+10.接口名称：会员注册
+请求方式：POST
+必须参数：$data=array('mobile'=>'手机号','password'=>'密码')；
+可选参数：
+接口地址：http地址+index.php?m=goods&c=api&a=member_reg 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=member_reg
+
+
+11.接口名称：会员退出登录
+请求方式：
+必须参数：；
+可选参数：
+接口地址：http地址+index.php?m=goods&c=api&a=member_logout 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=member_logout
+
+
+12.接口名称：店铺登录
+请求方式：POST
+必须参数：$data=array('seller_name'=>'会员名/手机号','password'=>'密码')；
+可选参数：
+接口地址：http地址+index.php?m=goods&c=api&a=member_login 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=member_login
+
+
+13.接口名称：店铺申请
+请求方式：POST
+必须参数：$data=array('mobile'=>'手机号','password'=>'密码')；
+可选参数：
+接口地址：http地址+index.php?m=goods&c=api&a=member_reg 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=member_reg
+
+
+14.接口名称：店铺退出登录
+请求方式：
+必须参数：；
+可选参数：
+接口地址：http地址+index.php?m=goods&c=api&a=seller_logout 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=seller_logout
+
+
+15.接口名称：首页轮播图
+请求方式：
+必须参数：；
+可选参数：
+接口地址：http地址+index.php?m=goods&c=api&a=bannert 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=banner
+
+
+16.接口名称：商品分类
+请求方式：
+必须参数：；
+可选参数：
+接口地址：http地址+index.php?m=goods&c=api&a=category 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=category
+
+
+17.接口名称：员工
+请求方式：GET
+必须参数：seller_id 店铺id；
+可选参数：tyep 1为客服，2为销售，3为维修
+接口地址：http地址+index.php?m=goods&c=api&a=staff 示例：www.b1ss.com/app/admin/index.php?m=goods&c=api&a=staff
+
+
+
+18.接口名称：会员修改密码
+请求方式：POST
+必须参数：Array ( [oldpassword] => 旧密码 [newpassword] => 新密码 [newpassword1] => 确认新密码 )
+可选参数：
+接口地址：http地址+index.php?m=member&c=api_account&a=resetpassword 示例：www.b1ss.com/app/admin/index.php?m=member&c=api_account&a=resetpassword
+
+
+19.接口名称：会员个人信息列表
+请求方式：GET
+必须参数：
+可选参数：已读   status=1  未读  status=0  默认全部   limit=查询条数（默认15条）
+接口地址：http地址+index.php?m=member&c=api&a=message 示例：http://www.b1ss.com/app/admin/index.php?m=member&c=api&a=message
+
+
+
+20.接口名称：会员个人信息设为已读
+请求方式：GET
+必须参数：id 消息ID
+可选参数：
+接口地址：http地址+index.php?m=member&c=api&a=ajax_update 示例：http://www.b1ss.com/app/admin/index.php?m=member&c=api&a=ajax_update
+
+
+21.接口名称：删除会员个人信息
+请求方式：POST
+必须参数：id=array('0'=>id1,'1'=>id2,)
+可选参数：
+接口地址：http地址+index.php?m=member&c=api&a=delete 示例：http://www.b1ss.com/app/admin/index.php?m=member&c=api&a=delete
+
+
+
+22.接口名称：会员个人订单列表
+请求方式：GET
+必须参数：
+可选参数：type=1 待付款  type=2 待发货
+接口地址：http地址+index.php?m=member&c=api_order&a=index 示例：http://www.b1ss.com/app/admin/index.php?m=member&c=api_order&a=index
+
+
+
+23.接口名称：客服聊天-信息列表
+请求方式：GET
+必须参数：seller_id 聊条店铺ID
+可选参数：
+接口地址：http地址+index.php?m=member&c=api_chat&a=lists 示例：http://www.b1ss.com/app/admin/index.php?m=member&c=api_chat&a=lists
+
+
+24.接口名称：客服聊天-发送消息
+请求方式：POST
+必须参数：seller_id 聊条店铺ID ,content 内容
+可选参数：
+接口地址：http地址+index.php?m=member&c=api_chat&a=ajax_add 示例：http://www.b1ss.com/app/admin/index.php?m=member&c=api_chat&a=ajax_add
+
+
+25.接口名称：增加商品评论
+请求方式：POST
+必须参数：spu_id 子商品id ,content 内容,mood ('positive=好评','neutral=中评','negative=差评')
+可选参数：
+接口地址：http地址+index.php?m=comment&c=api_member&a=add 示例：http://www.b1ss.com/app/admin/index.php?m=comment&c=api_member&a=add
+
+
+
+
+26.接口名称：增加店铺评论
+请求方式：POST
+必须参数：seller_id 店铺id ,content 内容,mood ('positive=好评','neutral=中评','negative=差评')
+可选参数：
+接口地址：http地址+index.php?m=comment&c=api_seller&a=add 示例：http://www.b1ss.com/app/admin/index.php?m=comment&c=api_seller&a=add
+
+
+27.接口名称：我的购物车
+请求方式：GET
+必须参数：
+可选参数：
+接口地址：http地址+index.php?m=order&c=api_cart&a=get_carts  示例：http://www.b1ss.com/app/admin/index.php?m=order&c=api_cart&a=get_carts
+
+
+28.接口名称：添加购物车
+请求方式：POST
+必须参数：sku_id 商品ID  nums  数量
+可选参数：
+接口地址：http地址+index.php?m=order&c=api_cart&a=cart_add  示例：http://www.b1ss.com/app/admin/index.php?m=order&c=api_cart&a=cart_add
+
+
+29.接口名称：设置购物车商品数量
+请求方式：POST
+必须参数：sku_id 商品ID  nums  数量
+可选参数：
+接口地址：http地址+index.php?m=order&c=api_cart&a=set_nums   示例：http://www.b1ss.com/app/admin/index.php?m=order&c=api_cart&a=set_nums
+
+
+30.接口名称：删除购物车
+请求方式：GET
+必须参数：sku_id 商品ID
+可选参数：
+接口地址：http地址+index.php?m=order&c=api_cart&a=delpro   示例：http://www.b1ss.com/app/admin/index.php?m=order&c=api_cart&a=delpro
+
+31.接口名称：结算购物车
+请求方式：GET
+必须参数：skus_id 商品ID 多个;隔开  比如：1;10;18
+
+可选参数：
+接口地址：http地址+index.php?m=order&c=api_order&a=settlement   示例：http://www.b1ss.com/app/admin/index.php?m=order&c=api_order&a=settlement&skus_id=1;10;18
+
+
+32.接口名称：结算购物车
+请求方式：GET
+必须参数：skus_id 商品ID 多个;隔开  比如：1;10;18
+
+可选参数：
+接口地址：http地址+index.php?m=order&c=api_order&a=settlement   示例：http://www.b1ss.com/app/admin/index.php?m=order&c=api_order&a=settlement&skus_id=1;10;18
+
+/*array(
+[error]=>0
+[pay_type]=>array()支付方式
+[address]=>array()收货地址
+[carts]=>array()购物车数据
+)
+*/
