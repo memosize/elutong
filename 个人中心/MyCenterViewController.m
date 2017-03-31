@@ -83,6 +83,7 @@
         cell.iconImageView.image = imagesArr[indexPath.row];
         cell.itemsLab.text = itemsArr[indexPath.row];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return cell;
 }

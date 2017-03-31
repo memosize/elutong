@@ -36,6 +36,7 @@ PODS:
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
   - YUSegment (0.2.0)
+  - YYModel (1.0.4)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
@@ -46,6 +47,7 @@ DEPENDENCIES:
   - MMDrawerController (~> 0.5.7)
   - SDWebImage (~> 3.8)
   - YUSegment
+  - YYModel
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -57,7 +59,8 @@ SPEC CHECKSUMS:
   MMDrawerController: 7a4cf8e25596bf2434e03ce50d22a8608ddee6a1
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   YUSegment: a1fa1237dfd5e6cbca28ca3b1eeac1151d0fb3b5
+  YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 8875fb40c76fc9653e32e97e4b12c5ce9715051a
+PODFILE CHECKSUM: c0e7d41473a90866bf0260d81388142cf6633269
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0

@@ -10,22 +10,12 @@
 #import <AFNetworking.h>
 #import <UIImageView+WebCache.h>
 #import "LoginState.h"
+#import "AddComment.h"
+#import "PubDefine.h"
+#import "Orders.h"
 @interface OrderViewController ()
-{
-//    NSMutableArray * order_snArr;
-//    NSMutableArray * ;
-//    NSMutableArray * order_snArr;
-//    NSMutableArray * order_snArr;
-//
-//    NSMutableArray * order_snArr;
-//
-//    NSMutableArray * order_snArr;
-//
-//    NSMutableArray * order_snArr;
 
-
-}
-
+@property (nonatomic, strong)Orders * orders;//订单模型
 @end
 
 @implementation OrderViewController
@@ -41,6 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+
 }
 - (void)initData
 {
@@ -53,11 +44,24 @@
     NSString * urlStr = @"http://www.b1ss.com/app/admin/index.php?m=member&c=api_order&a=index";
     [session GET:urlStr parameters:parm progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"请求成功");
+        NSLog(@"res = %@",responseObject);
           NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         NSLog(@"dic = %@",dic);
-        /*
+//        if ([[dic valueForKey:@"error"]isEqual:@0]) {
+//            NSArray * orderArr = [NSArray arrayWithArray:[responseObject valueForKey:@"orders"]];
+//            for (NSDictionary * dic in orderArr) {
+//                Orders * orders = [[Orders alloc] init];
+//                orders.proName = [[[dic valueForKey:@"sub_order"][0] valueForKey:@"sku"] valueForKey:@"sku_name"];
+//                 orders.proUrlStr = [[[dic valueForKey:@"sub_order"][0] valueForKey:@"sku"] valueForKey:@"sku_thumb"];
+//                 orders.num = [[[dic valueForKey:@"sub_order"][0] valueForKey:@"sku"] valueForKey:@"sku_nums"];
+//                 orders.price = [[[dic valueForKey:@"sub_order"][0] valueForKey:@"sku"] valueForKey:@"sku_price"];
+//                orders.sumPrice = [[dic valueForKey:@"sub_order"][0] valueForKey:@"total_amount"];
+//            }
+//
+//        }
+                /*
          订单号 ： order_sn
          thumb:     sku_thumb
                            sku_name
@@ -73,6 +77,13 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error = %@",error);
     }];
+}
+- (Orders *)orders
+{
+    if (_orders == nil) {
+        _orders = [[Orders alloc] init];
+    }
+    return _orders;
 }
 
 /*

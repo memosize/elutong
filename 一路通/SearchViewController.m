@@ -35,7 +35,7 @@
 - (void)initView
 {
     self.view.backgroundColor = [UIColor whiteColor];
-    searchTB = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    searchTB = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
     searchTB.delegate = self;
     searchTB.dataSource = self;
     searchTB.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -58,7 +58,7 @@
         NSLog(@"请求成功");
         NSLog(@"%@",responseObject);
         NSLog(@"%@",[responseObject valueForKey:@"data"]);
-        if (1) {
+        if ([[responseObject valueForKey:@"error"]isEqual:@0]) {
             NSArray * array = [NSArray arrayWithArray:[[responseObject valueForKey:@"data"]valueForKey:@"seller"]];
             for (int i  = 0; i<array.count; i++) {
                 [shopNameArr addObject:[array[i] valueForKey:@"shopName"]];

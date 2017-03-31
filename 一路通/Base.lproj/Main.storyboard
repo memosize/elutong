@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -105,15 +106,15 @@
             </objects>
             <point key="canvasLocation" x="249" y="-1139"/>
         </scene>
-        <!--sss-->
+        <!--个人中心-->
         <scene sceneID="SIi-8x-7dF">
             <objects>
-                <viewController title="sss" id="ffD-9w-bDV" customClass="MyCenterViewController" sceneMemberID="viewController">
+                <viewController title="个人中心" id="ffD-9w-bDV" customClass="MyCenterViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qXl-fp-FdV"/>
                         <viewControllerLayoutGuide type="bottom" id="1UD-xq-U4V"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="YnZ-Fs-g5t" customClass="MyCenterTableViewCell">
+                    <view key="view" contentMode="scaleToFill" id="YnZ-Fs-g5t">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -135,21 +136,21 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hUg-Py-zAZ">
-                                <rect key="frame" x="11" y="275" width="298" height="236"/>
+                                <rect key="frame" x="38" y="260" width="298" height="283"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="236" id="2bd-dG-3Z7"/>
-                                    <constraint firstAttribute="width" constant="298" id="TjH-UT-AzC"/>
+                                    <constraint firstAttribute="height" constant="283" id="qUh-jq-su4"/>
                                 </constraints>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="hUg-Py-zAZ" firstAttribute="centerX" secondItem="YnZ-Fs-g5t" secondAttribute="centerX" id="59y-FY-bOM"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hUg-Py-zAZ" secondAttribute="trailing" id="6cV-UE-kAB"/>
                             <constraint firstItem="hUg-Py-zAZ" firstAttribute="top" secondItem="mE5-RE-Vhg" secondAttribute="bottom" constant="53" id="7A3-8C-feL"/>
                             <constraint firstItem="f5P-UV-cJR" firstAttribute="centerX" secondItem="YnZ-Fs-g5t" secondAttribute="centerX" id="GG1-KW-jCT"/>
                             <constraint firstItem="f5P-UV-cJR" firstAttribute="top" secondItem="qXl-fp-FdV" secondAttribute="bottom" constant="19" id="Rxl-lc-SJI"/>
                             <constraint firstItem="mE5-RE-Vhg" firstAttribute="centerX" secondItem="YnZ-Fs-g5t" secondAttribute="centerX" id="bgW-bf-aEw"/>
+                            <constraint firstItem="hUg-Py-zAZ" firstAttribute="leading" secondItem="YnZ-Fs-g5t" secondAttribute="leadingMargin" id="gtf-S2-YG6"/>
                             <constraint firstItem="mE5-RE-Vhg" firstAttribute="top" secondItem="f5P-UV-cJR" secondAttribute="bottom" constant="15" id="l74-a1-05e"/>
                         </constraints>
                     </view>

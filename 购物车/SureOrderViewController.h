@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface SureOrderViewController : UIViewController
+@property (strong, nonatomic) IBOutlet UITableView *sureOrderTB;
+- (IBAction)sure:(id)sender;
 
 @end

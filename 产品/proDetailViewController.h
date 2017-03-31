@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface proDetailViewController : UIViewController
-@property (strong, nonatomic) IBOutlet UIImageView *proImageView;
-@property (strong, nonatomic) IBOutlet UILabel *priceLab;
-@property (strong,nonatomic) NSString * proImageUrl;
-@property (strong,nonatomic)NSString * proPrice;
-@property (strong,nonatomic)NSString * sku_id;
+
+@property (strong,nonatomic) NSString * contentStr;
+
 @end

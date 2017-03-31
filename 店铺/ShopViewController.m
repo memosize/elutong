@@ -36,6 +36,9 @@
 @implementation ShopViewController
  - (void)viewWillAppear:(BOOL)animated
 {
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"右边" style:UIBarButtonItemStyleDone target:self action:@selector(clickRightButton)];
+    self.navigationController.navigationItem.rightBarButtonItem = rightButton;
+    [self.navigationController.navigationItem setTitle:@"sss"];
         [self initdata];
 }
 - (void)viewDidLoad {
@@ -106,6 +109,10 @@
     session.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"application/x-json",@"text/html", nil];
     
     NSString * urlStr = @"http://www.b1ss.com/app/admin/index.php?m=goods&c=api&a=seller";
+    NSString * goodsListUrl = @"http://www.b1ss.com/app/admin/index.php?m=goods&c=api&a=goods_list";
+    NSString * commentUrl = @"http://www.b1ss.com/app/admin/index.php?m=goods&c=api&a=seller_comment";
+    NSDictionary * commentParm = @{@"seller_id":self.shopId};
+    NSDictionary * goodsParm = @{@"seller_id":self.shopId};
     NSDictionary * parm = [[NSDictionary alloc] initWithObjectsAndKeys:self.shopId,@"id", nil];
     
     [session GET:urlStr parameters:parm progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -143,6 +150,17 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"请求失败");
         
+    }];
+    [session GET:goodsListUrl parameters:goodsParm progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"res = %@",responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"fail -- ");
+    }];
+    //评论
+    [session GET:commentUrl parameters:commentParm progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"comRes = %@",responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"fail");
     }];
 
 }

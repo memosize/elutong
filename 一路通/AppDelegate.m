@@ -79,12 +79,24 @@
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setRootViewController:self.drawerController];
     [self.window makeKeyAndVisible];
+    UIViewController *viewController = [[UIStoryboard storyboardWithName:@"LaunchScreen" bundle:nil] instantiateViewControllerWithIdentifier:@"LaunchScreen"];
+    
+    UIView *launchView = viewController.view;
+    UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+    launchView.frame = [UIApplication sharedApplication].keyWindow.frame;
+    [mainWindow addSubview:launchView];
+    
+    [UIView animateWithDuration:3.0 delay:0.5f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        launchView.alpha = 0.0f;
+        launchView.layer.transform = CATransform3DScale(CATransform3DIdentity, 1.5f, 1.5f, 2.0f);
+    } completion:^(BOOL finished) {
+        [launchView removeFromSuperview];
+    }];
     return YES;
 
     
 
-    
-    return YES;
+  
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -108,5 +120,36 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-
+- (void)setLaunchImage{
+    CGSize viewSize =self.window.bounds.size;//获取当前屏幕Size
+    NSString*viewOrientation =@"Portrait";//横屏请设置成 @"Landscape"
+    NSString*launchImage =nil;
+    
+    //从info.plist文件中获取启动图的数组，这里会返回一个数组（里满是你设置好的启动图）
+    NSArray* imagesDict = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"UILaunchImages"];
+    for(NSDictionary* dict in imagesDict) {
+        CGSize imageSize =CGSizeFromString(dict[@"UILaunchImageSize"]);
+        //这里取出数组里面和当前屏幕尺寸相同的iamge
+        if(CGSizeEqualToSize(imageSize, viewSize) && [viewOrientation isEqualToString:dict[@"UILaunchImageOrientation"]]) {
+            
+            launchImage = dict[@"UILaunchImageName"];
+        }
+    }
+    
+    UIImageView * launchView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:launchImage]];
+    
+    launchView.frame=self.window.bounds;
+    launchView.contentMode=UIViewContentModeScaleAspectFill;
+    [self.window addSubview:launchView];
+    //动画效果(你也可以这只其他，这种timeOut效果不错，用过MBProgressHUD人都知道)
+    //在两秒内将alpha设置为0，之后在移除
+    [UIView animateWithDuration:2.0f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         launchView.alpha=0.0f;
+                         launchView.layer.transform=CATransform3DScale(CATransform3DIdentity,1.2,1.2,1);
+                     }
+                     completion:^(BOOL finished) {
+                         [launchView removeFromSuperview];
+                     }];
+}
 @end

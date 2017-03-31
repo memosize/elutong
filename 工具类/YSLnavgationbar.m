@@ -7,8 +7,20 @@
 //
 
 #import "YSLnavgationbar.h"
-
+#import "PubDefine.h"
 @implementation YSLnavgationbar
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.backgroundColor = [UIColor grayColor];
+        self.leftBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 15, 40, 40)];
+        self.rightBtn = [[UIButton alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - 70, 15, 40, 40)];
+        [self addSubview:_rightBtn];
+        [self addSubview:_leftBtn];
+    }
+    return self;
+}
 
 /*
 // Only override drawRect: if you perform custom drawing.

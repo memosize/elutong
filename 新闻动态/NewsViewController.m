@@ -25,6 +25,7 @@
     NSMutableArray * movieTitleArr;
     NSMutableArray * otheNameArr;
     NSMutableArray * otherImageArr;
+    NSMutableArray * contentArr;
 }
 
 @end
@@ -43,7 +44,8 @@
 }
 - (void)initView
 {
-    newsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) - 64) style:UITableViewStyleGrouped];
+    newsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)) style:UITableViewStylePlain];
+    newsTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     newsTableView.delegate = self;
     newsTableView.dataSource = self;
     [self.view addSubview:newsTableView];
@@ -57,6 +59,7 @@
      movieTitleArr = [NSMutableArray array];
     otheNameArr = [NSMutableArray array];
     otherImageArr = [NSMutableArray array];
+    contentArr = [NSMutableArray array];
     
     sectionArr = [[NSArray alloc] initWithObjects:@"新闻动态",@"视频中心",@"其他" ,nil];
 //    [titleArr addObserver:self forKeyPath:@"count" options:nil context:NULL];
@@ -71,30 +74,37 @@
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
       
         NSLog(@"res = %@",responseObject);
-        NSArray * dicc = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
-        NSLog(@"dicc = %@",dicc);
-        NSDictionary * dic = [NSDictionary dictionaryWithDictionary:[responseObject valueForKey:@"data"]];
-        NSArray * newsArr = [NSArray arrayWithArray:[dic valueForKey:@"news"]];
-        NSArray * movieArr = [NSArray arrayWithArray:[dic valueForKey:@"movie"]];
-        NSArray * otherArr = [NSArray arrayWithArray:[dic valueForKey:@"other"]];
-      
-
-        NSLog(@"newsArr.count = %d",newsArr.count);
-        for (int i = 0; i < [newsArr count]; i ++) {
-            [titleArr addObject:[newsArr[i] valueForKey:@"main"]];
-            [newsImageArr addObject:[newsArr[i] valueForKey:@"newsimg"]];
-            [timeArr addObject:[newsArr[i] valueForKey:@"date"]];
+        if ([[responseObject valueForKey:@"error"]isEqual:@0]) {
+            NSArray * newsArr = [NSArray arrayWithArray:[responseObject valueForKey:@"data"]];
+            for (NSDictionary * dic in newsArr) {
+                [newsImageArr addObject:[dic valueForKey:@"newsimg"]];
+                [contentArr addObject:[dic valueForKey:@"content"]];
+                [titleArr addObject:[dic valueForKey:@"title"]];
+                [timeArr addObject:[dic valueForKey:@"date"]];
+            }
         }
-        for (int i = 0; i < movieArr.count; i++) {
-            [movieUrlArr addObject:[movieArr[i] valueForKey:@"url"]];
-            [movieTitleArr addObject:[movieArr[i] valueForKey:@"title"]];
-        }
-        for (int i = 0; i < otherArr.count; i++) {
-            [otheNameArr addObject:[otherArr[i] valueForKey:@"name"]];
-            [otherImageArr addObject:[otherArr[i] valueForKey:@"img"]];
-        }
-   
-        NSLog(@"movieArr = %@",movieUrlArr);
+//        NSDictionary * dic = [NSDictionary dictionaryWithDictionary:[responseObject valueForKey:@"data"]];
+//        NSArray * newsArr = [NSArray arrayWithArray:[dic valueForKey:@"news"]];
+//        NSArray * movieArr = [NSArray arrayWithArray:[dic valueForKey:@"movie"]];
+//        NSArray * otherArr = [NSArray arrayWithArray:[dic valueForKey:@"other"]];
+//      
+//
+//        NSLog(@"newsArr.count = %d",newsArr.count);
+//        for (int i = 0; i < [newsArr count]; i ++) {
+//            [titleArr addObject:[newsArr[i] valueForKey:@"main"]];
+//            [newsImageArr addObject:[newsArr[i] valueForKey:@"newsimg"]];
+//            [timeArr addObject:[newsArr[i] valueForKey:@"date"]];
+//        }
+//        for (int i = 0; i < movieArr.count; i++) {
+//            [movieUrlArr addObject:[movieArr[i] valueForKey:@"url"]];
+//            [movieTitleArr addObject:[movieArr[i] valueForKey:@"title"]];
+//        }
+//        for (int i = 0; i < otherArr.count; i++) {
+//            [otheNameArr addObject:[otherArr[i] valueForKey:@"name"]];
+//            [otherImageArr addObject:[otherArr[i] valueForKey:@"img"]];
+//        }
+//   
+//        NSLog(@"movieArr = %@",movieUrlArr);
         if (newsImageArr.count) {
             [newsTableView reloadData];
         }
@@ -107,8 +117,8 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-       if (indexPath.section == 0) {
-         NewsTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"news"];
+    NewsTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"news"];
+        
         if (cell == nil) {
                     cell = [[[NSBundle mainBundle]loadNibNamed:@"NewsTableViewCell" owner:nil options:nil]lastObject];
                     cell.timeLab.text = timeArr[indexPath.row];
@@ -116,68 +126,50 @@
                     [cell.newsImageView sd_setImageWithURL:[NSURL URLWithString:newsImageArr[indexPath.row]]];
             
                 }
+    
            return cell;
-        }
+        
+
+}
+//    else if (indexPath.section == 1)
+//    {
+//    MovieTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"movie"];
+//        if (cell == nil) {
+//            cell = [[[NSBundle mainBundle]loadNibNamed:@"MovieTableViewCell" owner:nil options:nil]lastObject];
+//            [cell.movieBtn addTarget:self action:@selector(play:) forControlEvents:UIControlEventTouchUpInside];
+//            cell.mtitleLab.text = movieTitleArr[indexPath.row];
+//        }
+//        return cell;
+//    }
+//    else{
+//        UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"other"];
+//        if (cell == nil) {
+//            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"other"];
+////            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:otherImageArr[indexPath.row]]];
+////            cell.textLabel.text = otheNameArr[indexPath.row];
+//        }
+//        return cell;
+//    }
     
-    else if (indexPath.section == 1)
-    {
-    MovieTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"movie"];
-        if (cell == nil) {
-            cell = [[[NSBundle mainBundle]loadNibNamed:@"MovieTableViewCell" owner:nil options:nil]lastObject];
-            [cell.movieBtn addTarget:self action:@selector(play:) forControlEvents:UIControlEventTouchUpInside];
-            cell.mtitleLab.text = movieTitleArr[indexPath.row];
-        }
-        return cell;
-    }
-    else{
-        UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"other"];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"other"];
-//            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:otherImageArr[indexPath.row]]];
-//            cell.textLabel.text = otheNameArr[indexPath.row];
-        }
-        return cell;
-    }
-    
+
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 72;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return newsImageArr.count;
-    }
-    else if (section == 1)
-    {
-        return movieTitleArr.count;
-    }
-    else
-        return otheNameArr.count;
+    return titleArr.count;
 }
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return sectionArr.count;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 0) {
-        return 72;
-    }else if (indexPath.section == 1)
-    {
-        return 164;
-    }else{
-        return 44;
-}
-}
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return sectionArr[section];
-}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NewsDetailViewController * newsDetailVC = [[NewsDetailViewController alloc] initWithNibName:@"NewsDetailViewController" bundle:nil];
+    NewsDetailViewController * newsDetailVC = [[NewsDetailViewController alloc] init];
     newsDetailVC.titleStr = titleArr[indexPath.row];
     newsDetailVC.imageUrl = newsImageArr[indexPath.row];
     newsDetailVC.timeStr = timeArr[indexPath.row];
-    newsDetailVC.contentStr = titleArr[indexPath.row];
+    newsDetailVC.contentStr = contentArr[indexPath.row];
     [self.navigationController pushViewController:newsDetailVC animated:YES];
 }
 - (void)play:(UIButton *)sender

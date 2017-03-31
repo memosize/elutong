@@ -13,6 +13,8 @@
 #import "LoginViewController.h"
 #import "SearchViewController.h"
 #import <UIImageView+WebCache.h>
+#import <MapKit/MapKit.h>
+#import "PubDefine.h"
 @interface RescueViewController ()<UITableViewDelegate,UITableViewDataSource,UIAlertViewDelegate,UISearchBarDelegate>
 {
     UITableView * rescuelistTB;//救援列表
@@ -23,6 +25,9 @@
     NSMutableArray * disArr;//距离
     NSMutableArray * iconUrl;
     NSMutableArray * shopIdArr;
+    NSMutableArray * lonArr;
+    NSMutableArray * latArr;
+    
     
 }
 
@@ -43,6 +48,7 @@
     self.navigationItem.leftBarButtonItem =    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
     [leftBtn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     searchbar = [[UISearchBar alloc] initWithFrame:CGRectMake(375*0.5, 2, 100, 30)];
+    searchbar.center = CGPointMake(0.5*SCREEN_WIDTH, 17);
     searchbar.delegate = self;
     searchbar.placeholder = @"搜索店铺";
     [self.navigationController.navigationBar addSubview:searchbar];
@@ -79,11 +85,18 @@
         positionArray  = [NSMutableArray array];
         telNumArray = [NSMutableArray array];
         shopIdArr  = [NSMutableArray array];
-//        [disArr addObject:[responseObject[0] valueForKey:@"distance"]];
+        latArr = [NSMutableArray array];
+        lonArr = [NSMutableArray array];
+    
+
+        [disArr addObject:[responseObject[0] valueForKey:@"distance"]];
         [iconUrl addObject:[responseObject[0] valueForKey:@"avatar"]];
-//        [shopNameArray addObject:[responseObject[0] valueForKey:@"shopName"]];
-//        [positionArray addObject:[responseObject[0] valueForKey:@"address"]];
-//        [telNumArray addObject:[responseObject[0] valueForKey:@"mobile"]];
+        [shopNameArray addObject:[responseObject[0] valueForKey:@"shopName"]];
+        [positionArray addObject:[responseObject[0] valueForKey:@"address"]];
+        [telNumArray addObject:[responseObject[0] valueForKey:@"phone"]];
+        [lonArr addObject:[responseObject[0] valueForKey:@"lat"]];
+        [latArr addObject:[responseObject[0] valueForKey:@"lng"]];
+        [shopIdArr addObject:[responseObject[0] valueForKey:@"id"]];
         NSLog(@"positionArr = %@",positionArray);
         NSLog(@"disarr = %@",disArr);
         [rescuelistTB reloadData];
@@ -118,32 +131,31 @@
         cell.openLab.layer.borderWidth = 1;
         cell.openLab.layer.borderColor = [UIColor colorWithRed:99/255.0 green:161/255.0 blue:70/255.0 alpha:1].CGColor;
         cell.openLab.textColor = [UIColor colorWithRed:99/255.0 green:161/255.0 blue:70/255.0 alpha:1];
-        [cell.rescueBtn addTarget:self action:@selector(rescue) forControlEvents:UIControlEventTouchUpInside];
-        [cell.navigateBtn addTarget:self action:@selector(navigate) forControlEvents:UIControlEventTouchUpInside];
-//        cell.carLab.text = shopNameArray[indexPath.row];
-//        [cell.shopImageView sd_setImageWithURL:[NSURL URLWithString:iconUrl[indexPath.row]]];
-//        cell.addLab.text = positionArray[indexPath.row];
-//        cell.addLab.adjustsFontSizeToFitWidth = YES;
-//        cell.disLab.text = disArr[indexPath.row];
-//        cell.numLaB.text = [NSString stringWithFormat:@"%d",telNumArray[indexPath.row]];
-        cell.carLab.text = @"大搜索科技";
+        [cell.rescueBtn addTarget:self action:@selector(rescue:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.navigateBtn addTarget:self action:@selector(navigate:) forControlEvents:UIControlEventTouchUpInside];
+        cell.carLab.text = shopNameArray[indexPath.row];
         [cell.shopImageView sd_setImageWithURL:[NSURL URLWithString:iconUrl[indexPath.row]]];
-        cell.addLab.text = @"成都市环球时代中心";
-        
-        cell.addLab.adjustsFontSizeToFitWidth = YES;
-        cell.disLab.text =@"0.3km";
-        cell.numLaB.text = @"13000000000";
+        cell.addLab.text = positionArray[indexPath.row];
+        cell.addLab.numberOfLines = 2;
+        cell.addLab.font = [UIFont systemFontOfSize:10];
+//        cell.addLab.adjustsFontSizeToFitWidth = YES;
+        cell.disLab.text = [NSString stringWithFormat:@"距离您%@km",disArr[indexPath.row]];
+
+        cell.numLaB.text = telNumArray[indexPath.row];
+
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     }
     return cell;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return [disArr count];
     
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 201;
+    return 195;
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -166,15 +178,52 @@
     [searchbar resignFirstResponder];
 }
 
-- (void)rescue
+- (void)rescue:(UIButton *)sender
 {
     UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"您的订单正在救援中" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     [alertView show];
+//    NSLog(@"shopidarr = %@",shopIdArr);
+//    AFHTTPSessionManager * session = [AFHTTPSessionManager manager];
+//    session.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"application/x-json",@"text/html", nil];
+//    session.requestSerializer = [AFHTTPRequestSerializer serializer];// 请求
+//    session.responseSerializer = [AFHTTPResponseSerializer serializer];// 响应
+//    
+//    NSString * urlStr = @"http://www.b1ss.com/app/admin/index.php?m=member&c=rescueApi&a=computeMoney";
+//    RescueTableViewCell * resCell = [(RescueTableViewCell *)[sender superview] superview];
+//    NSIndexPath *resIndex  = [rescuelistTB indexPathForCell:resCell];
+//    NSInteger resRow = resIndex.row;
+//    NSDictionary * parm = @{@"id":shopIdArr[resRow]};
+//    [session GET:urlStr parameters:parm progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//             NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+//        NSLog(@"string = %@",string);
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        NSLog(@"error = %@",error);
+//    }];
 }
-- (void)navigate
+- (void)navigate:(UIButton *)sender
 {
+        RescueTableViewCell * resCell = [(RescueTableViewCell *)[sender superview] superview];
+        NSIndexPath *resIndex  = [rescuelistTB indexPathForCell:resCell];
+        NSInteger resRow = resIndex.row;
 
+    CLLocationCoordinate2D loc = CLLocationCoordinate2DMake([lonArr[resRow] floatValue], [latArr[resRow] floatValue]);
     
+//    CLLocationCoordinate2D loc = CLLocationCoordinate2DMake(30.584755,104.069754);
+//   104.073264,30.63111
+//    CLLocationCoordinate2D loc = CLLocationCoordinate2DMake(104.118263, 30.664883);
+     CLLocationCoordinate2D form = CLLocationCoordinate2DMake(30.0533811, 101.976814);
+    NSLog(@"loc = %f %f",loc.latitude,loc.longitude);
+    MKMapItem * currentLoc = [MKMapItem mapItemForCurrentLocation];
+    NSLog(@"CURRENT = %f",currentLoc.placemark.coordinate.latitude);
+    MKMapItem * toLoc = [[MKMapItem alloc] initWithPlacemark:[[MKPlacemark alloc] initWithCoordinate:loc addressDictionary:nil]];
+    toLoc.name = [NSString stringWithFormat:@"%@",shopNameArray[resRow]];
+     MKMapItem * fromLoc = [[MKMapItem alloc] initWithPlacemark:[[MKPlacemark alloc] initWithCoordinate:form addressDictionary:nil]];
+    [MKMapItem openMapsWithItems:@[currentLoc,toLoc] launchOptions:@{MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeDriving,MKLaunchOptionsShowsTrafficKey:[NSNumber numberWithBool:YES], MKLaunchOptionsMapTypeKey: [NSNumber numberWithInteger:MKMapTypeStandard]}];
+//    NSString *urlsting =[[NSString stringWithFormat:@"baidumap://map/direction?origin={{我的位置}}&destination=latlng:%f,%f|name=目的地&mode=driving&coord_type=bd09ll&region=成都",loc.latitude,loc.longitude] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    NSString * uu = @"baidumap://map/direction?origin=latlng:39.980195,116.311766|name:当前位置&destination=latlng:39.982258,116.317164|name:中石化中关村加油站 &mode=driving&region=北京";
+////NSString *urlString = [[NSString stringWithFormat:@"baidumap://map/direction?origin=latlng:104.09184f,30.637728|name:我的位置&destination=latlng:104.079912,30.565987|name:终点&mode=driving"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ;
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlsting]];
+//    
 }
 - (void)back
 {

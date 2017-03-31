@@ -20,4 +20,6 @@
 @property (strong,nonatomic)NSString * seller_id;
 @property (strong,nonatomic)NSString * proImageUrl;
 @property (strong,nonatomic)NSString * proPrice;
+@property (strong,nonatomic)NSString * proContentStr;
+
 @end

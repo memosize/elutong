@@ -9,37 +9,45 @@
 #import "proDetailViewController.h"
 #import <UIImageView+WebCache.h>
 #import <AFNetworking.h>
+#import <WebKit/WebKit.h>
+#import "PubDefine.h"
 @interface proDetailViewController ()
-
+{
+    UIScrollView * myscrollView;
+}
+@property (nonatomic, strong)WKWebView * webView;
 @end
 
 @implementation proDetailViewController
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self initData];
+
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    NSLog(@"%@",self.proImageUrl);
-    self.priceLab.text = [NSString stringWithFormat:@"价格:%@",self.proPrice];
-    [self.proImageView sd_setImageWithURL:[NSURL URLWithString:self.proImageUrl]];
+    [self initWebView];
+
 }
-- (void)initData
+- (WKWebView *)webView
 {
-    AFHTTPSessionManager * session = [AFHTTPSessionManager manager];
-    session.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"application/x-json",@"text/html", nil];
-    
-    NSString * urlStr = @"http://www.b1ss.com/app/admin/index.php?m=goods&c=api&a=goods_detail";
-    NSDictionary * parm = [[NSDictionary alloc] initWithObjectsAndKeys:self.sku_id,@"sku_id", nil];
-    [session GET:urlStr parameters:parm progress:^(NSProgress * _Nonnull downloadProgress) {
-        NSLog(@"请求中。。。");
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"请求成功");
-        NSLog(@"res =  %@",responseObject);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"error = %@",error);
-    }];
+    if (!_webView) {
+        WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+        config.preferences = [WKPreferences new];
+        //The minimum font size in points default is 0;
+        config.preferences.minimumFontSize = 30;
+        _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 88, SCREEN_WIDTH, SCREEN_HEIGHT - 88) configuration:config];
+        
+    }
+    return _webView;
+}
+- (void)initWebView
+{
+    myscrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    myscrollView.contentSize = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT * 1.2);
+    [self.view addSubview:myscrollView];
+    [self.webView loadHTMLString:self.contentStr baseURL:nil];
+    [self.view addSubview:_webView];
 }
 
 

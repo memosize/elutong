@@ -164,13 +164,13 @@
     shoplayout.scrollDirection = UICollectionViewScrollPositionCenteredVertically;
     //设置每个item的大小为100*100
     shoplayout.itemSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 100);
-    shoplayout.minimumInteritemSpacing = 50;
+    
     
     UICollectionViewFlowLayout * prolayout = [[UICollectionViewFlowLayout alloc]init];
     //设置布局方向为横向流布局
     prolayout.scrollDirection = UICollectionViewScrollPositionCenteredHorizontally;
     //设置每个item的大小为100*100
-    prolayout.itemSize = CGSizeMake(100, 168);
+    prolayout.itemSize = CGSizeMake((SCREEN_WIDTH - 40)/3, 168);
     [self.proCollection setCollectionViewLayout:prolayout];
     //代理设置
     
@@ -193,7 +193,10 @@
     StoreCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"procellId" forIndexPath:indexPath];
     cell.proNameLab.text = self.proNameArr[indexPath.row];
     [cell.proImageView sd_setImageWithURL:[NSURL URLWithString:self.proUrlArr[indexPath.row]]];
-    cell.priceLab.text = [NSString stringWithFormat:@"￥ %@",self.proPriceArrl[indexPath.row]];
+    cell.proImageView.layer.masksToBounds = YES;
+    
+    cell.proImageView.layer.cornerRadius = 8;
+    cell.priceLab.text = [NSString stringWithFormat:@"￥%@",self.proPriceArrl[indexPath.row]];
     cell.priceLab.textColor = [UIColor redColor];
     return cell;
 }

@@ -172,12 +172,11 @@
     NSString * pwdStr = pwdTF.text;
     NSLog(@"numStr = %@",numStr);
 
-    NSDictionary * parm = [NSDictionary dictionaryWithObjectsAndKeys:numStr,@"username",pwdStr,@"password", nil];
+    NSDictionary * parm = [NSDictionary dictionaryWithObjectsAndKeys:@"123456",@"username",@"123456",@"password", nil];
      [session POST:urlStr parameters:parm progress:^(NSProgress * _Nonnull uploadProgress) {
         NSLog(@"请求数据");
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"string = %@",string);
         NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         NSLog(@"dic = %@",dic);
@@ -200,7 +199,6 @@
             [alertView show];
 
         }
-     
 
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"请求失败");

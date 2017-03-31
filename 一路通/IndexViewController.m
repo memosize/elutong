@@ -96,8 +96,7 @@
             NSLog(@"%lu,%lu,%lu,%lu",[self.proNameArr count],[self.proUrlArr count],[self.skuIdArr count],(unsigned long)[self.selleridArr count]);
             // 需要商品id 店铺id 商品名 商品图片url
             [proCollection reloadData];
-
-        }
+}
         
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -130,9 +129,18 @@
 }
 - (void)initView
 {
+    NSLog(@"%f",SCREEN_HEIGHT);
     bgScrollerView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT * 2)];
-    bgScrollerView.contentSize = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT * 3);
-//    bgScrollerView.backgroundColor = [UIColor whiteColor];
+    if (SCREEN_HEIGHT == 568) {
+            bgScrollerView.contentSize = CGSizeMake(SCREEN_WIDTH, 670 * 3.5 - 160);
+    }
+    if (SCREEN_HEIGHT == 667) {
+        bgScrollerView.contentSize = CGSizeMake(SCREEN_WIDTH, 670 * 3.5 - 130);
+    }
+    if (SCREEN_HEIGHT == 736) {
+        bgScrollerView.contentSize = CGSizeMake(SCREEN_WIDTH, 670 * 3.5);
+    }
+
     myscrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 150)];
     CGFloat imageW = myscrollView.frame.size.width;
     CGFloat imageH = myscrollView.frame.size.height;
@@ -174,6 +182,16 @@
     [self.view addSubview:bgScrollerView];
     [bgScrollerView addSubview:myscrollView];
     [bgScrollerView addSubview:pageControl];
+    UIView * lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 240, SCREEN_WIDTH, 9)];
+    lineView.backgroundColor = [UIColor colorWithRed:169/255.0 green:169/255.0 blue:169/255.0 alpha:0.8];
+        UIView * lineView_2 = [[UIView alloc] initWithFrame:CGRectMake(0, 388, SCREEN_WIDTH, 15)];
+        lineView_2.backgroundColor = [UIColor colorWithRed:169/255.0 green:169/255.0 blue:169/255.0 alpha:0.8];
+    UIView * lineView_3 = [[UIView alloc] initWithFrame:CGRectMake(0, myscrollView.frame.origin.y + 210, SCREEN_WIDTH, 15)];
+    lineView_3.backgroundColor = [UIColor colorWithRed:169/255.0 green:169/255.0 blue:169/255.0 alpha:0.8];
+
+//    [bgScrollerView addSubview:lineView];
+//    [bgScrollerView addSubview:lineView_2];
+//    [bgScrollerView addSubview:lineView_3];
 
     __weak typeof (self) weakSelf = self;//防止循环使用
 
@@ -209,7 +227,7 @@
     [rescueBtn setImage:[UIImage imageNamed:@"link_03@3x"] forState:UIControlStateNormal];
     [rescueBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
-    rescueBtn.titleEdgeInsets = UIEdgeInsetsMake(40, -42, -10, 0);
+    rescueBtn.titleEdgeInsets = UIEdgeInsetsMake(40, -42, -20, 0);
     rescueBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     [rescueBtn addTarget:self action:@selector(turnToRescue) forControlEvents:UIControlEventTouchUpInside];
     NewsBtn = [[UIButton alloc] initWithFrame:CGRectMake(100, myscrollView.frame.origin.y + 100, 40, 63)];
@@ -218,7 +236,7 @@
     [NewsBtn setImage:[UIImage imageNamed:@"link_05@3x"] forState:UIControlStateNormal];
     [NewsBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
-    NewsBtn.titleEdgeInsets = UIEdgeInsetsMake(40, -42, -10, 1);
+    NewsBtn.titleEdgeInsets = UIEdgeInsetsMake(40, -42, -20, 1);
     NewsBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     //购物按钮
     [NewsBtn addTarget:self action:@selector(turnToNews) forControlEvents:UIControlEventTouchUpInside];
@@ -228,7 +246,7 @@
     [shopBtn setImage:[UIImage imageNamed:@"link_07@3x"] forState:UIControlStateNormal];
     [shopBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
-    shopBtn.titleEdgeInsets = UIEdgeInsetsMake(40, -42, -10, 0);
+    shopBtn.titleEdgeInsets = UIEdgeInsetsMake(40, -42, -20, 0);
     shopBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     [shopBtn addTarget:self action:@selector(turnToStore) forControlEvents:UIControlEventTouchUpInside];
     // 维修按钮
@@ -238,7 +256,7 @@
     [serviceBtn setImage:[UIImage imageNamed:@"link_09@3x"] forState:UIControlStateNormal];
     [serviceBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
-    serviceBtn.titleEdgeInsets = UIEdgeInsetsMake(40, -42, -10, 0);
+    serviceBtn.titleEdgeInsets = UIEdgeInsetsMake(40, -42, -20, 0);
     serviceBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     [serviceBtn addTarget:self action:@selector(turnToMaintain) forControlEvents:UIControlEventTouchUpInside];
     // 新品推荐按钮
@@ -294,12 +312,12 @@
     }];
     [secRecBtn makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(80, 20));
-        make.top.equalTo(myscrollView).with.offset(400);
+        make.top.equalTo(myscrollView).with.offset(368);
         make.left.equalTo(self.view).with.offset(10);
     }];
     [secMoreBtn makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(40, 20));
-        make.top.equalTo(myscrollView).with.offset(400);
+        make.top.equalTo(myscrollView).with.offset(368);
         make.right.equalTo(self.view).with.offset(-10);
     }];
     [rescueBtn makeConstraints:^(MASConstraintMaker *make) {
@@ -338,20 +356,21 @@
     //设置布局方向为横向流布局
     shoplayout.scrollDirection = UICollectionViewScrollPositionCenteredVertically;
     //设置每个item的大小为100*100
-    shoplayout.itemSize = CGSizeMake(CGRectGetWidth(self.view.bounds), (200));
-    shoplayout.minimumInteritemSpacing = 5;
+    shoplayout.itemSize = CGSizeMake(CGRectGetWidth(self.view.bounds), (170));
+    shoplayout.minimumInteritemSpacing = 30;
     
     UICollectionViewFlowLayout * prolayout = [[UICollectionViewFlowLayout alloc]init];
     //设置布局方向为横向流布局
     prolayout.scrollDirection = UICollectionViewScrollPositionCenteredHorizontally;
     //设置每个item的大小为100*100
-    prolayout.itemSize = CGSizeMake(SCREEN_WIDTH/3 - 5, 120);
+    prolayout.itemSize = CGSizeMake((SCREEN_WIDTH - 20)/3 - 10, 120);
     prolayout.minimumInteritemSpacing = 0;
-
+    
 //创建collectionView 通过一个布局策略layout来创建
-    shopCollection = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 430, CGRectGetWidth(self.view.bounds), 1230) collectionViewLayout:shoplayout];
-    //代理设置
+    shopCollection = [[UICollectionView alloc]initWithFrame:CGRectMake(10, 400, CGRectGetWidth(self.view.bounds) - 20, 1020) collectionViewLayout:shoplayout];    //代理设置
     shopCollection.backgroundColor = [UIColor whiteColor];
+//      shopCollection.backgroundColor = [UIColor colorWithRed:169/255.0 green:169/255.0 blue:169/255.0 alpha:1.0];
+    shopCollection.scrollEnabled = NO;
     shopCollection.delegate=self;
     shopCollection.dataSource=self;
     //注册item类型 这里使用系统的类型
@@ -359,7 +378,7 @@
     
     [bgScrollerView addSubview:shopCollection];
     
-    proCollection = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 250, CGRectGetWidth(self.view.bounds), 120) collectionViewLayout:prolayout];
+    proCollection = [[UICollectionView alloc]initWithFrame:CGRectMake(10, 250, CGRectGetWidth(self.view.bounds) - 20, 120) collectionViewLayout:prolayout];
     
     //代理设置
 
@@ -396,12 +415,21 @@
         cell.shopNameLab.text = self.sellerNameArr[indexPath.row];
         [cell.shopImageView sd_setImageWithURL:[NSURL URLWithString:self.sellerImageUrlArr[indexPath.row]]];
         __weak typeof (self) weakSelf = self;
+        cell.shopImageView.layer.masksToBounds = YES;
+        cell.shopImageView.layer.cornerRadius = 20;
+//        cell.layer.borderWidth = 7;
+//        cell.layer.borderColor = [UIColor grayColor].CGColor;
+    
+    
         return cell;
     }else
     {
         ProductCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"procellId" forIndexPath:indexPath];
         cell.proNameLab.text = self.proNameArr[indexPath.row];
         [cell.proImageView sd_setImageWithURL:[NSURL URLWithString:self.proUrlArr[indexPath.row]]];
+        cell.proImageView.layer.masksToBounds = YES;
+
+        cell.proImageView.layer.cornerRadius = 8;
         return cell;
     }
 
@@ -429,7 +457,6 @@
     }
     
 }
-
 // 跳转到救援
 - (void)turnToRescue
 {

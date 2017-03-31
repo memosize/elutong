@@ -14,4 +14,5 @@
 @property (strong, nonatomic)NSString * num;// 数量
 @property (strong, nonatomic)NSString * sumPrice;//总价
 @property (strong, nonatomic)NSString * proUrlStr;//图片地址
+
 @end

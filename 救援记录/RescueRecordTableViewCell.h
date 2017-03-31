@@ -20,6 +20,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *rec_sumMoneyLab;
 @property (strong, nonatomic) IBOutlet UILabel *rec_chargeMothod_Lab;
 @property (strong, nonatomic) IBOutlet UILabel *rec_statusLab;
+@property (weak, nonatomic) IBOutlet UIButton *cancleBtn;
 
 
 @end

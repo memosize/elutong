@@ -13,10 +13,10 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    self.chargeLab.adjustsFontSizeToFitWidth = YES;
-    self.openLab.adjustsFontSizeToFitWidth = YES;
-    self.elecCarLab.adjustsFontSizeToFitWidth = YES;
-    self.motoBycleLab.adjustsFontSizeToFitWidth = YES;
+//    self.chargeLab.adjustsFontSizeToFitWidth = YES;
+//    self.openLab.adjustsFontSizeToFitWidth = YES;
+//    self.elecCarLab.adjustsFontSizeToFitWidth = YES;
+//    self.motoBycleLab.adjustsFontSizeToFitWidth = YES;
     self.rescueBtn.layer.borderWidth = 0.5;
     self.rescueBtn.layer.cornerRadius = 4;
     self.rescueBtn.layer.borderColor = [UIColor grayColor].CGColor;

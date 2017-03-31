@@ -48,9 +48,9 @@
     [super viewDidLoad];
 
     UIButton * leftBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [leftBtn setImage:[UIImage imageNamed:@"nav (3)"] forState:UIControlStateNormal];
-    UIButton * rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(300, 0, 30, 30)];
     [leftBtn setImage:[UIImage imageNamed:@"nav (6)"] forState:UIControlStateNormal];
+    UIButton * rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(300, 0, 30, 30)];
+    [rightBtn setImage:[UIImage imageNamed:@"nav (3)"] forState:UIControlStateNormal];
     [leftBtn addTarget:self action:@selector(leftBtn) forControlEvents:UIControlEventTouchUpInside];
     [rightBtn addTarget:self action:@selector(rightBtn) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];

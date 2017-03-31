@@ -15,6 +15,7 @@
 #import "StoreViewController.h"
 #import <Masonry.h>
 #import "SureOrderViewController.h"
+
 @interface PurcherViewController ()<UITableViewDelegate,UITableViewDataSource,changeValueDelegate>
 {
     __block float sumPrice;
@@ -90,45 +91,48 @@
 //        NSLog(@"%d",proImageUrlArr.count);
 //        nullView = [[UIView alloc] initWithFrame:CGRectMake(0, -400, SCREEN_WIDTH, 150)];
 //        nullView.backgroundColor = [UIColor redColor];
+    if (proTB == nil) {
         proTB = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.bounds), SCREEN_HEIGHT-150-120) style:UITableViewStylePlain];
-    [proTB setEditing:YES];
-    
-
+        [proTB setEditing:YES];
+        
+        
         proTB.delegate = self;
         proTB.dataSource = self;
         footView = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 44 - 150, SCREEN_WIDTH, 150)];
-//    footView.backgroundColor = [UIColor redColor];
+        //    footView.backgroundColor = [UIColor redColor];
         sumLab = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH * 0.5 - 100 , 40, 200, 30)];
         [sumLab setAdjustsFontSizeToFitWidth:YES];
         sumLab.text = [NSString stringWithFormat:@"共计 0件         金额:   0.0"];
         jiesuanBtn = [[UIButton alloc] initWithFrame:CGRectMake(220, 100, 100, 30)];
-    jiesuanBtn.center = CGPointMake(SCREEN_WIDTH*0.5 - 80 ,115);
+        jiesuanBtn.center = CGPointMake(SCREEN_WIDTH*0.5 - 80 ,115);
         [jiesuanBtn setTitle:@"结算订单" forState:UIControlStateNormal];
         [jiesuanBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [jiesuanBtn setBackgroundColor:[UIColor redColor]];
-    jiesuanBtn.layer.cornerRadius = 4;
-    [jiesuanBtn addTarget:self action:@selector(pay) forControlEvents:UIControlEventTouchUpInside];
+        jiesuanBtn.layer.cornerRadius = 4;
+        [jiesuanBtn addTarget:self action:@selector(pay) forControlEvents:UIControlEventTouchUpInside];
         goShopBtn = [[UIButton alloc] initWithFrame:CGRectMake(40, 100, 100, 30)];
-    goShopBtn.center = CGPointMake(SCREEN_WIDTH*0.5 + 80, 115);
-    
+        goShopBtn.center = CGPointMake(SCREEN_WIDTH*0.5 + 80, 115);
+        
         [goShopBtn setTitle:@"继续购物" forState:UIControlStateNormal];
         [goShopBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [goShopBtn setBackgroundColor:[UIColor redColor]];
-    goShopBtn.layer.cornerRadius = 4;
-    [goShopBtn addTarget:self action:@selector(backToStore) forControlEvents:UIControlEventTouchUpInside];
-
-    
-    
+        goShopBtn.layer.cornerRadius = 4;
+        [goShopBtn addTarget:self action:@selector(backToStore) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        
         [footView addSubview:sumLab];
         [footView addSubview:goShopBtn];
         [footView addSubview:jiesuanBtn];
         [self.view addSubview:footView];
-//    [proTB setTableFooterView:footView];
-//        [self.view addSubview:nullView];
-    
+        //    [proTB setTableFooterView:footView];
+        //        [self.view addSubview:nullView];
+        
         
         [self.view addSubview:proTB];
+
     }
+}
 
 - (void)initData
 {
@@ -175,13 +179,11 @@
                 [sumPriceOfThisProArr addObject:[dic valueForKey:@"prices"]];
             }
         count = proNameArr.count;
-        dispatch_async(dispatch_get_main_queue(), ^{
             
                    [self initView];
 
             [proTB reloadData];
 
-        });
     }
 }
      
@@ -358,9 +360,9 @@
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
-    [proTB removeFromSuperview];
-    [footView removeFromSuperview];
-    [noGoodsView removeFromSuperview];
+//    [proTB removeFromSuperview];
+//    [footView removeFromSuperview];
+//    [noGoodsView removeFromSuperview];
     // 设置商品数量
     NSMutableArray * proNumArr = [NSMutableArray array];
     NSDictionary * parm = [NSDictionary dictionary];
@@ -380,7 +382,7 @@
 }
 - (void)pay
 {
-    SureOrderViewController * sureVC = [[SureOrderViewController alloc] init];
+    SureOrderViewController * sureVC = [[SureOrderViewController alloc] initWithNibName:@"SureOrderViewController" bundle:nil];
     [self.navigationController pushViewController:sureVC animated:YES];
 }
 /*

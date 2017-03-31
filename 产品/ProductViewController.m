@@ -25,7 +25,7 @@
     NSDictionary *attributes=[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor],NSForegroundColorAttributeName,nil];
     [self.navigationController.navigationBar setTitleTextAttributes:attributes];
     self.navigationItem.title = @"产品详情";
-    self.navigationItem.backBarButtonItem = nil;
+//    self.navigationItem.backBarButtonItem = nil;
       [self initData];
     NSLog(@"self.sku_id = %@",self.sku_id);
 }
@@ -114,6 +114,8 @@
         NSString * stockStr =[responseObject valueForKey:@"spu_total"];
         self.priceLab.text = [NSString stringWithFormat:@"促销价:%@",priceStr];
         self.stockLab.text = [NSString stringWithFormat:@"库存：%@",stockStr];
+        self.proContentStr = [responseObject valueForKey:@"content"];
+        NSLog(@"self.proContentStr = %@",self.proContentStr);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error = %@",error);
     }];
@@ -125,9 +127,7 @@
 {
     if (indexPath.row == 0) {
         proDetailViewController * proDetailVC = [[proDetailViewController alloc] initWithNibName:@"proDetailViewController" bundle:nil];
-        proDetailVC.proPrice = self.proPrice;
-        proDetailVC.proImageUrl = self.proImageUrl;
-        proDetailVC.sku_id = self.sku_id;
+        proDetailVC.contentStr = self.proContentStr;
         [self.navigationController pushViewController:proDetailVC animated:YES];
     }
     else{
